@@ -1,6 +1,7 @@
 # Ignore backend dependencies and secrets
 backend/node_modules/
 backend/.env
+backend/.env.local
 
 # Ignore frontend dependencies, build files, and secrets
 frontend/node_modules/
