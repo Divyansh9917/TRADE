@@ -11,6 +11,7 @@ export default function TradeTerminal() {
   const [limitPrice, setLimitPrice] = useState("64231.50");
   const [livePrice, setLivePrice] = useState(64231.50);
   const [activeTab, setActiveTab] = useState("positions");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Real-time market streaming engine connection
   useEffect(() => {
@@ -55,6 +56,8 @@ export default function TradeTerminal() {
 
   const executeOrderPipeline = async (side) => {
     if (!user) return alert("System state error: Authenticating session...");
+    
+    setIsProcessing(true);
 
     const executionPayload = {
       userEmail: user.primaryEmailAddress.emailAddress,
@@ -75,6 +78,7 @@ export default function TradeTerminal() {
       });
 
       const serverResult = await response.json();
+      setIsProcessing(false);
 
       if (response.ok) {
         alert(`Order Dispatched Successfully. ID: ${serverResult._id || "ACK"}`);
@@ -82,6 +86,7 @@ export default function TradeTerminal() {
         alert(`Order Execution Rejected: ${serverResult.error || "Unknown Error"}`);
       }
     } catch (networkError) {
+      setIsProcessing(false);
       console.error("Critical Transport Fault:", networkError);
       alert("Network Transport Fault: Check routing configuration or CORS origins.");
     }
@@ -242,15 +247,17 @@ export default function TradeTerminal() {
           <div className="flex gap-3 md:gap-4 lg:gap-3 mt-8 lg:mt-6">
             <button 
               onClick={() => executeOrderPipeline("BUY")}
-              className="flex-1 bg-emerald-600 hover:bg-emerald-500 cursor-pointer active:scale-[0.98] text-white py-4 md:py-5 lg:py-3 rounded-lg text-xs md:text-sm lg:text-xs font-bold uppercase tracking-widest transition-all shadow-lg shadow-emerald-950/20"
+              disabled={isProcessing}
+              className={`flex-1 ${isProcessing ? 'bg-zinc-700 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-500 cursor-pointer active:scale-[0.98] shadow-lg shadow-emerald-950/20'} text-white py-4 md:py-5 lg:py-3 rounded-lg text-xs md:text-sm lg:text-xs font-bold uppercase tracking-widest transition-all`}
             >
-              Acquire / Long
+              {isProcessing ? "PROCESSING..." : "ACQUIRE / LONG"}
             </button>
             <button 
               onClick={() => executeOrderPipeline("SELL")}
-              className="flex-1 bg-red-600 hover:bg-red-500 cursor-pointer active:scale-[0.98] text-white py-4 md:py-5 lg:py-3 rounded-lg text-xs md:text-sm lg:text-xs font-bold uppercase tracking-widest transition-all shadow-lg shadow-red-950/20"
+              disabled={isProcessing}
+              className={`flex-1 ${isProcessing ? 'bg-zinc-700 cursor-not-allowed' : 'bg-red-600 hover:bg-red-500 cursor-pointer active:scale-[0.98] shadow-lg shadow-red-950/20'} text-white py-4 md:py-5 lg:py-3 rounded-lg text-xs md:text-sm lg:text-xs font-bold uppercase tracking-widest transition-all`}
             >
-              Liquidate / Short
+              {isProcessing ? "PROCESSING..." : "LIQUIDATE / SHORT"}
             </button>
           </div>
 
