@@ -3,8 +3,8 @@ import { dark } from '@clerk/themes'
 import './globals.css'
 
 export const metadata = {
-  title: 'Prop Trading Terminal',
-  description: 'Placement-ready proprietary trading platform.',
+  title: 'Prop Trading',
+  description: 'proprietary trading platform.',
 }
 
 export default function RootLayout({ children }) {

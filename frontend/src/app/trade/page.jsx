@@ -78,9 +78,9 @@ export default function TradeTerminal() {
       const serverResult = await response.json();
 
       if (response.ok) {
-        alert(`Order Dispatched Successfully. ID: ${serverResult._id || "ACK"}`);
+        alert(`✅ Order Dispatched Successfully. ID: ${serverResult._id || "ACK"}`);
       } else {
-        alert(`Order Execution Rejected: ${serverResult.error || "Unknown Error"}`);
+        alert(`❌ Order Execution Rejected: ${serverResult.error || "Unknown Error"}`);
       }
     } catch (networkError) {
       console.error("Critical Transport Fault:", networkError);
@@ -99,12 +99,24 @@ export default function TradeTerminal() {
 
       {/* Pillar 1: Global Navigation Rail */}
       <aside className="w-16 border-r border-zinc-900 flex flex-col items-center py-5 bg-zinc-950 z-20">
-        <div className="text-emerald-500 font-black text-xl mb-10 tracking-tighter select-none">PT</div>
+        <div className="text-emerald-500 font-black text-xl mb-10 tracking-tighter select-none cursor-default">PT</div>
         <div className="flex flex-col gap-6 text-zinc-500">
-          <button className="text-emerald-400 hover:text-white transition-colors">📊</button>
-          <button className="hover:text-white transition-colors">⚙️</button>
+          <button 
+            onClick={() => alert("Advanced Charting is currently active.")}
+            className="text-emerald-400 hover:text-white transition-colors cursor-pointer"
+            title="Charts"
+          >
+            📊
+          </button>
+          <button 
+            onClick={() => alert("Settings module is locked for standard users.")}
+            className="hover:text-white transition-colors cursor-pointer"
+            title="Settings"
+          >
+            ⚙️
+          </button>
         </div>
-        <div className="mt-auto mb-2">
+        <div className="mt-auto mb-2 cursor-pointer hover:scale-105 transition-transform" title="Profile Settings">
           <UserButton afterSignOutUrl="/sign-in" />
         </div>
       </aside>
@@ -137,7 +149,7 @@ export default function TradeTerminal() {
           <div className="flex border-b border-zinc-900 px-4 bg-zinc-950">
             <button 
               onClick={() => setActiveTab("positions")}
-              className={`px-4 py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-all ${activeTab === "positions" ? "border-emerald-500 text-emerald-400" : "border-transparent text-zinc-500 hover:text-zinc-300"}`}
+              className={`px-4 py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-all cursor-pointer ${activeTab === "positions" ? "border-emerald-500 text-emerald-400" : "border-transparent text-zinc-500 hover:text-zinc-300"}`}
             >
               Active Risk Positions (1)
             </button>
@@ -180,13 +192,13 @@ export default function TradeTerminal() {
           <div className="grid grid-cols-2 bg-black rounded-lg p-1 border border-zinc-900 mb-6">
             <button 
               onClick={() => setOrderType("Market")}
-              className={`py-1.5 text-xs font-bold rounded-md uppercase tracking-wider transition-all ${orderType === "Market" ? "bg-zinc-900 text-white shadow-sm border border-zinc-800" : "text-zinc-500 hover:text-zinc-300"}`}
+              className={`py-1.5 text-xs font-bold rounded-md uppercase tracking-wider transition-all cursor-pointer ${orderType === "Market" ? "bg-zinc-900 text-white shadow-sm border border-zinc-800" : "text-zinc-500 hover:text-zinc-300"}`}
             >
               Market
             </button>
             <button 
               onClick={() => setOrderType("Limit")}
-              className={`py-1.5 text-xs font-bold rounded-md uppercase tracking-wider transition-all ${orderType === "Limit" ? "bg-zinc-900 text-white shadow-sm border border-zinc-800" : "text-zinc-500 hover:text-zinc-300"}`}
+              className={`py-1.5 text-xs font-bold rounded-md uppercase tracking-wider transition-all cursor-pointer ${orderType === "Limit" ? "bg-zinc-900 text-white shadow-sm border border-zinc-800" : "text-zinc-500 hover:text-zinc-300"}`}
             >
               Limit
             </button>
@@ -226,13 +238,13 @@ export default function TradeTerminal() {
           <div className="flex gap-3 mt-4">
             <button 
               onClick={() => executeOrderPipeline("BUY")}
-              className="flex-1 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all shadow-lg shadow-emerald-950/20"
+              className="flex-1 bg-emerald-600 hover:bg-emerald-500 cursor-pointer active:scale-[0.98] text-white py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all shadow-lg shadow-emerald-950/20"
             >
               Acquire / Long
             </button>
             <button 
               onClick={() => executeOrderPipeline("SELL")}
-              className="flex-1 bg-red-600 hover:bg-red-500 active:scale-[0.98] text-white py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all shadow-lg shadow-red-950/20"
+              className="flex-1 bg-red-600 hover:bg-red-500 cursor-pointer active:scale-[0.98] text-white py-3 rounded-lg text-xs font-bold uppercase tracking-widest transition-all shadow-lg shadow-red-950/20"
             >
               Liquidate / Short
             </button>
