@@ -10,7 +10,7 @@ import { Server } from 'socket.io';
 
 // Import Models
 import Trade from './models/Trade.js';
-import Post from './models/post.js'; 
+import Post from './models/Post.js'; 
 
 dotenv.config();
 
