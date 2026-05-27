@@ -81,9 +81,6 @@ const apiSecurityLimiter = rateLimit({
 });
 app.use('/api/', apiSecurityLimiter);
 
-// ==========================================
-// 🚀 TRADING CORE ENDPOINTS
-// ==========================================
 
 app.post('/api/trades', async (req, res) => {
   const { userEmail, symbol, side, orderType, quantity, price } = req.body;
@@ -121,10 +118,6 @@ app.get('/api/trades/:email', async (req, res) => {
   }
 });
 
-// ==========================================
-// 📝 COMMUNITY BLOG ENDPOINTS
-// ==========================================
-
 app.post('/api/posts', async (req, res) => {
   const { title, content, authorName, authorEmail, tag } = req.body;
 
@@ -152,7 +145,18 @@ app.get('/api/posts', async (req, res) => {
   }
 });
 
-
+app.delete('/api/posts/:id', async (req, res) => {
+  try {
+    const deletedPost = await Post.findByIdAndDelete(req.params.id);
+    if (!deletedPost) {
+      return res.status(404).json({ error: "Post not found." });
+    }
+    return res.status(200).json({ message: "Post deleted successfully." });
+  } catch (err) {
+    console.error("Delete Post Error:", err.message);
+    return res.status(500).json({ error: "Failed to delete post." });
+  }
+});
 
 app.use((err, req, res, next) => {
   console.error("Unhandled Thread Crash Exception:", err.stack);
